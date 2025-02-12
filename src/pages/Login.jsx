@@ -48,8 +48,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white px-6 py-8 w-full max-w-sm mx-auto sm:max-w-md">
-      <h1 className="text-3xl font-extrabold mb-6 text-purple-400 text-center">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white px-4 py-6 w-full max-w-md mx-auto">
+      <h1 className="text-2xl sm:text-3xl font-extrabold mb-6 text-purple-400 text-center">
         Fingertech Login
       </h1>
 
@@ -76,9 +76,9 @@ const Login = () => {
         <button
           type="button"
           onClick={() => setMostrarPassword(!mostrarPassword)}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-transparent p-1 text-gray-400 hover:text-white transition"
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 p-1 text-gray-400 hover:text-white transition"
         >
-          {mostrarPassword ? <EyeOff className="h-6 w-6" /> : <Eye className="h-6 w-6" />}
+          {mostrarPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
         </button>
       </div>
 
@@ -87,7 +87,7 @@ const Login = () => {
         onClick={handleLogin}
         disabled={cargando}
         className={`w-full px-6 py-4 mt-6 ${
-          cargando ? "bg-gray-500" : "bg-purple-600 hover:bg-purple-700"
+          cargando ? "bg-gray-500 cursor-not-allowed" : "bg-purple-600 hover:bg-purple-700"
         } transition-all rounded-lg text-white font-bold shadow-lg flex items-center justify-center gap-2 text-lg`}
       >
         {cargando ? "⏳ Iniciando sesión..." : "Ingresar"}

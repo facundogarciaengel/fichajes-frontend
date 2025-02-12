@@ -48,8 +48,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[100vh] bg-gray-900 text-white px-4 py-6 w-full overflow-hidden">
-      <h1 className="text-2xl sm:text-3xl font-extrabold mb-6 text-purple-400 text-center">
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-900 text-white px-6 py-6 w-full">
+      <h1 className="text-2xl sm:text-3xl font-extrabold mb-6 text-purple-400 text-center w-full">
         Fingertech Login
       </h1>
 
@@ -95,7 +95,7 @@ const Login = () => {
 
       {/* Mensajes de validación */}
       {mensaje && (
-        <p className="mt-4 text-yellow-400 text-center font-semibold text-sm sm:text-base">
+        <p className="mt-4 text-yellow-400 text-center font-semibold text-sm sm:text-base w-full">
           {mensaje}
         </p>
       )}

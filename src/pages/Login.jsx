@@ -48,7 +48,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-900 text-white px-4 py-6 w-full overflow-y-auto">
+    <div className="flex flex-col items-center justify-center min-h-[100vh] bg-gray-900 text-white px-4 py-6 w-full overflow-hidden">
       <h1 className="text-2xl sm:text-3xl font-extrabold mb-6 text-purple-400 text-center">
         Fingertech Login
       </h1>

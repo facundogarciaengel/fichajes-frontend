@@ -48,12 +48,13 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="bg-gray-800 shadow-lg rounded-lg w-full max-w-md mx-auto py-8 px-6 sm:px-8 text-white">
+    <div className="h-screen flex items-center justify-center bg-gray-900">
+      <div className="w-full max-w-sm bg-gray-800 shadow-lg rounded-lg py-10 px-6 sm:px-8 text-white">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-purple-400">
           Bienvenido a Fingertech
         </h1>
 
+        {/* Input DNI */}
         <div className="mb-4">
           <label htmlFor="dni" className="block text-sm font-medium text-gray-300">DNI</label>
           <input
@@ -68,6 +69,7 @@ const Login = () => {
           />
         </div>
 
+        {/* Input Contraseña con botón de mostrar/ocultar */}
         <div className="mb-4">
           <label htmlFor="password" className="block text-sm font-medium text-gray-300">Contraseña</label>
           <div className="relative w-full">
@@ -89,10 +91,11 @@ const Login = () => {
           </div>
         </div>
 
+        {/* Botón Ingresar con spinner de carga */}
         <button
           onClick={handleLogin}
           disabled={cargando}
-          className={`w-full px-6 py-3 mt-4 ${
+          className={`w-full px-6 py-3 mt-6 ${
             cargando ? "bg-gray-500" : "bg-purple-600 hover:bg-purple-700"
           } transition-all rounded-lg text-white font-bold shadow-lg flex items-center justify-center gap-2`}
         >
@@ -104,6 +107,7 @@ const Login = () => {
           ) : "Ingresar"}
         </button>
 
+        {/* Mensajes de validación */}
         {mensaje && (
           <div className="mt-4 text-center">
             <p className={`text-sm sm:text-base font-semibold ${mensaje.startsWith("✅") ? "text-green-500" : "text-yellow-400"}`}>

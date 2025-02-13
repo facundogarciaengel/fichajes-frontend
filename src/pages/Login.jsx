@@ -48,13 +48,12 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white px-4 sm:px-6 lg:px-8">
-      <div className="bg-gray-800 shadow-lg rounded-lg px-8 py-6 w-full max-w-md sm:w-2/3 md:w-1/2 lg:w-1/3">
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+      <div className="bg-gray-800 shadow-lg rounded-lg w-full max-w-md mx-auto py-8 px-6 sm:px-8">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-purple-400">
           Bienvenido a Fingertech
         </h1>
 
-        {/* Input DNI */}
         <div className="mb-4">
           <label htmlFor="dni" className="block text-sm font-medium text-gray-300">DNI</label>
           <input
@@ -69,7 +68,6 @@ const Login = () => {
           />
         </div>
 
-        {/* Input Contraseña con botón de mostrar/ocultar */}
         <div className="mb-4">
           <label htmlFor="password" className="block text-sm font-medium text-gray-300">Contraseña</label>
           <div className="relative w-full">
@@ -91,7 +89,6 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Botón Ingresar con spinner de carga */}
         <button
           onClick={handleLogin}
           disabled={cargando}
@@ -107,7 +104,6 @@ const Login = () => {
           ) : "Ingresar"}
         </button>
 
-        {/* Mensajes de validación */}
         {mensaje && (
           <div className="mt-4 text-center">
             <p className={`text-sm sm:text-base font-semibold ${mensaje.startsWith("✅") ? "text-green-500" : "text-yellow-400"}`}>

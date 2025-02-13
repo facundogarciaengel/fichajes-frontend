@@ -48,57 +48,74 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-900 text-white px-6 py-6 w-full">
-      <h1 className="text-2xl sm:text-3xl font-extrabold mb-6 text-purple-400 text-center w-full">
-        Fingertech Login
-      </h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white px-4 sm:px-6 lg:px-8">
+      <div className="bg-gray-800 shadow-lg rounded-lg px-8 py-6 w-full max-w-md sm:w-2/3 md:w-1/2 lg:w-1/3">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-purple-400">
+          Bienvenido a Fingertech
+        </h1>
 
-      {/* Input DNI */}
-      <input
-        type="text"
-        placeholder="DNI"
-        value={dni}
-        onChange={(e) => {
-          if (/^\d*$/.test(e.target.value)) setDni(e.target.value);
-        }}
-        className="w-full p-4 mb-4 bg-gray-800 text-white rounded-md border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
-      />
+        {/* Input DNI */}
+        <div className="mb-4">
+          <label htmlFor="dni" className="block text-sm font-medium text-gray-300">DNI</label>
+          <input
+            type="text"
+            id="dni"
+            placeholder="Ingrese su DNI"
+            value={dni}
+            onChange={(e) => {
+              if (/^\d*$/.test(e.target.value)) setDni(e.target.value);
+            }}
+            className="w-full px-4 py-3 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </div>
 
-      {/* Input Contraseña con botón de mostrar/ocultar */}
-      <div className="relative w-full">
-        <input
-          type={mostrarPassword ? "text" : "password"}
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-4 pr-12 bg-gray-800 text-white rounded-md border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
-        />
+        {/* Input Contraseña con botón de mostrar/ocultar */}
+        <div className="mb-4">
+          <label htmlFor="password" className="block text-sm font-medium text-gray-300">Contraseña</label>
+          <div className="relative w-full">
+            <input
+              type={mostrarPassword ? "text" : "password"}
+              id="password"
+              placeholder="Ingrese su contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 pr-12 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            <button
+              type="button"
+              onClick={() => setMostrarPassword(!mostrarPassword)}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-transparent p-1 text-gray-400 hover:text-white transition"
+            >
+              {mostrarPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Botón Ingresar con spinner de carga */}
         <button
-          type="button"
-          onClick={() => setMostrarPassword(!mostrarPassword)}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-transparent p-1 text-gray-400 hover:text-white transition"
+          onClick={handleLogin}
+          disabled={cargando}
+          className={`w-full px-6 py-3 mt-4 ${
+            cargando ? "bg-gray-500" : "bg-purple-600 hover:bg-purple-700"
+          } transition-all rounded-lg text-white font-bold shadow-lg flex items-center justify-center gap-2`}
         >
-          {mostrarPassword ? <EyeOff className="h-6 w-6" /> : <Eye className="h-6 w-6" />}
+          {cargando ? (
+            <>
+              <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-purple-500 mr-2"></div>
+              Iniciando sesión...
+            </>
+          ) : "Ingresar"}
         </button>
+
+        {/* Mensajes de validación */}
+        {mensaje && (
+          <div className="mt-4 text-center">
+            <p className={`text-sm sm:text-base font-semibold ${mensaje.startsWith("✅") ? "text-green-500" : "text-yellow-400"}`}>
+              {mensaje}
+            </p>
+          </div>
+        )}
       </div>
-
-      {/* Botón Ingresar */}
-      <button
-        onClick={handleLogin}
-        disabled={cargando}
-        className={`w-full px-6 py-4 mt-6 ${
-          cargando ? "bg-gray-500" : "bg-purple-600 hover:bg-purple-700"
-        } transition-all rounded-lg text-white font-bold shadow-lg flex items-center justify-center gap-2 text-lg`}
-      >
-        {cargando ? "⏳ Iniciando sesión..." : "Ingresar"}
-      </button>
-
-      {/* Mensajes de validación */}
-      {mensaje && (
-        <p className="mt-4 text-yellow-400 text-center font-semibold text-sm sm:text-base w-full">
-          {mensaje}
-        </p>
-      )}
     </div>
   );
 };

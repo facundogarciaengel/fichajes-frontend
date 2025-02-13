@@ -48,7 +48,7 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-900">
+    <div className="w-full h-screen flex items-center justify-center bg-gray-900">
       <div className="w-full max-w-sm bg-gray-800 shadow-lg rounded-lg py-10 px-6 sm:px-8 text-white">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-purple-400">
           Bienvenido a Fingertech

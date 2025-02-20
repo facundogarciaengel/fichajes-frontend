@@ -17,6 +17,23 @@ const Fichaje = () => {
     obtenerUbicacion();
   }, []);
 
+  useEffect(() => {
+    if (mostrarCamara && videoRef.current) {
+      console.log("🔵 Intentando acceder a la cámara tras renderizar el video...");
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+        .then(stream => {
+          videoRef.current.srcObject = stream;
+          console.log("📹 Stream asignado al video correctamente:", stream);
+        })
+        .catch(error => {
+          console.error("❌ Error al acceder a la cámara:", error);
+          setMensaje("❌ No se pudo acceder a la cámara");
+        });
+    }
+  }, [mostrarCamara]); // Se ejecuta cada vez que `mostrarCamara` cambia a `true`
+  
+  
+
   const obtenerUbicacion = async () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -51,26 +68,27 @@ const Fichaje = () => {
     }
   };
 
-  const iniciarCamara = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-      setMostrarCamara(true);
-    } catch (error) {
-      console.error("Error al iniciar la cámara:", error);
-      setMensaje("❌ No se pudo acceder a la cámara");
-    }
+  
+  const iniciarCamara = () => {
+    console.log("📷 Activando cámara...");
+    setMostrarCamara(true); // Esto activará el useEffect que se encargará de asignar el stream
   };
-
+  
+  
+   
   const capturarSelfie = () => {
     if (videoRef.current && canvasRef.current) {
       const canvas = canvasRef.current;
       const context = canvas.getContext("2d");
+      // Reducir la resolución de la imagen antes de convertirla a base64
+      const width = 240; // Reducimos el tamaño a 240px de ancho
+      const height = 180; // Ajustamos la altura proporcionalmente
+      canvas.width = width;
+      canvas.height = height;
       context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-      setSelfie(canvas.toDataURL("image/png"));
-      setMostrarCamara(false);
+      // Convertimos la imagen a Base64 con calidad reducida
+      setSelfie(canvas.toDataURL("image/jpeg", 0.6)); // 0.6 indica una calidad del 60%
+      setMostrarCamara(false)
     }
   };
 
@@ -124,7 +142,7 @@ const Fichaje = () => {
       {mostrarCamara ? (
         <div>
           <video ref={videoRef} autoPlay className="w-full h-auto" />
-          <canvas ref={canvasRef} className="hidden" width={320} height={240} />
+          <canvas ref={canvasRef} className="hidden" width={240} height={180} />
           <button onClick={capturarSelfie} className="mt-4 bg-green-600 px-4 py-2 rounded-md">Capturar Selfie</button>
         </div>
       ) : (

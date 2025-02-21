@@ -7,7 +7,7 @@ const Fichaje = () => {
   const [mensaje, setMensaje] = useState("");
   const [historial, setHistorial] = useState([]);
   const [cargandoFichaje, setCargandoFichaje] = useState(false);
-  const token = localStorage.getItem("token") || "";
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     obtenerUbicacion();
@@ -18,7 +18,6 @@ const Fichaje = () => {
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
           const coords = `${pos.coords.latitude},${pos.coords.longitude}`;
-          console.log(coords);
           setUbicacion(coords);
           await obtenerDireccion(coords);
         },
@@ -33,7 +32,6 @@ const Fichaje = () => {
   };
 
   const obtenerDireccion = async (coords) => {
-    console.log("🔵 Obteniendo dirección de las coordenadas:", coords);
     try {
       const respuesta = await fetch(
         `https://fichajes-backend.onrender.com/api/obtener-direccion?coordenadas=${coords}`,
@@ -42,15 +40,14 @@ const Fichaje = () => {
         }
       );
       const data = await respuesta.json();
-
       if (respuesta.ok) {
-        setDireccion(data.direccion || "❌ Dirección no disponible");
+        setDireccion(data.direccion);
       } else {
         setDireccion("❌ Dirección no disponible");
       }
     } catch (error) {
       console.error("Error obteniendo dirección:", error);
-      setDireccion("❌ Error al obtener dirección");
+      setDireccion("❌ Dirección no disponible");
     }
   };
 
@@ -76,7 +73,15 @@ const Fichaje = () => {
       const data = await respuesta.json();
       if (respuesta.ok) {
         setMensaje(`✅ Fichaje registrado: ${data.fichaje.tipo.toUpperCase()}`);
-        await actualizarHistorial();
+        setHistorial((prev) => [
+          {
+            ...data.fichaje,
+            fechaHora: moment(data.fichaje.fechaHora)
+              .tz("America/Argentina/Buenos_Aires")
+              .format("DD/MM/YYYY HH:mm:ss"),
+          },
+          ...prev.slice(0, 4),
+        ]);
       } else {
         setMensaje(`⚠️ ${data.mensaje || "Error al registrar fichaje"}`);
       }
@@ -87,28 +92,13 @@ const Fichaje = () => {
     setCargandoFichaje(false);
   };
 
-  const actualizarHistorial = async () => {
-    try {
-      const respuesta = await fetch("https://fichajes-backend.onrender.com/api/fichajes", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await respuesta.json();
-      if (respuesta.ok) {
-        setHistorial(data.fichajes || []);
-      }
-    } catch (error) {
-      console.error("Error al actualizar historial:", error);
-    }
-  };
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white px-4 py-6 sm:px-6 sm:py-10 w-full max-w-md mx-auto">
       <h1 className="text-2xl sm:text-3xl font-extrabold mb-3 text-purple-400 text-center">
         Registrar Fichaje
       </h1>
-      <p className="mb-4 text-sm sm:text-lg text-center flex items-center gap-2 truncate">
-        <span className="whitespace-nowrap">Ubicación: {direccion.includes("❌") ? "❌" : "📍"}</span>
-        <span className="text-ellipsis overflow-hidden">{direccion}</span>
+      <p className="mb-4 text-sm sm:text-lg text-center flex items-center gap-2">
+        Ubicación: {direccion.includes("❌") ? "❌" : "📍"} {direccion}
       </p>
       <button
         onClick={fichar}
@@ -129,13 +119,13 @@ const Fichaje = () => {
       <h2 className="text-lg sm:text-xl mt-6 text-purple-300 font-bold text-center">
         Historial Reciente
       </h2>
-      <ul className="mt-4 w-full max-w-xs space-y-2 sm:space-y-3">
+      <ul className="mt-4 w-full space-y-2 sm:space-y-3">
         {historial.map((f, index) => (
           <li
             key={index}
             className="bg-gray-800 p-3 sm:p-4 rounded-lg shadow-md flex justify-between items-center border border-gray-700 text-xs sm:text-sm"
           >
-            <span className="font-bold text-purple-200 truncate">{f.fechaHora}</span>
+            <span className="font-bold text-purple-200">{f.fechaHora}</span>
             <span
               className={`px-2 sm:px-3 py-1 rounded text-white font-semibold ${
                 f.tipo === "entrada" ? "bg-green-500" : "bg-red-500"

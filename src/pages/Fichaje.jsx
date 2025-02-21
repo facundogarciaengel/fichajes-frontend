@@ -39,6 +39,7 @@ const Fichaje = () => {
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
           const coords = `${pos.coords.latitude},${pos.coords.longitude}`;
+          console.log(coords);
           setUbicacion(coords);
           await obtenerDireccion(coords);
         },
@@ -53,6 +54,7 @@ const Fichaje = () => {
   };
 
   const obtenerDireccion = async (coords) => {
+    console.log("🔵 Obteniendo dirección de las coordenadas:", coords);
     try {
       const respuesta = await fetch(
         `https://fichajes-backend.onrender.com/api/obtener-direccion?coordenadas=${coords}`,
@@ -61,10 +63,16 @@ const Fichaje = () => {
         }
       );
       const data = await respuesta.json();
-      setDireccion(respuesta.ok ? data.direccion : "❌ Dirección no disponible");
+      console.log("📍 Respuesta de la API de geolocalización:", data);
+      if (respuesta.ok && data.direccion) {
+        setDireccion(data.direccion);
+      } else {
+        console.warn("⚠️ No se encontró dirección para estas coordenadas:", coords);
+        setDireccion("❌ Dirección no disponible");
+      }
     } catch (error) {
       console.error("Error obteniendo dirección:", error);
-      setDireccion("❌ Dirección no disponible");
+      setDireccion("❌ Error al obtener dirección");
     }
   };
 
@@ -92,6 +100,20 @@ const Fichaje = () => {
     }
   };
 
+  const actualizarHistorial = async () => {
+    try {
+      const respuesta = await fetch("https://fichajes-backend.onrender.com/api/fichajes", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await respuesta.json();
+      if (respuesta.ok) {
+        setHistorial(data.fichajes);
+      }
+    } catch (error) {
+      console.error("Error al actualizar historial:", error);
+    }
+  };
+
   const fichar = async () => {
     if (!ubicacion || direccion.includes("❌")) {
       setMensaje("⚠️ Ubicación no válida, intenta nuevamente.");
@@ -113,15 +135,9 @@ const Fichaje = () => {
       const data = await respuesta.json();
       if (respuesta.ok) {
         setMensaje(`✅ Fichaje registrado: ${data.fichaje.tipo.toUpperCase()}`);
-        setHistorial((prev) => [
-          {
-            ...data.fichaje,
-            fechaHora: moment(data.fichaje.fechaHora)
-              .tz("America/Argentina/Buenos_Aires")
-              .format("DD/MM/YYYY HH:mm:ss"),
-          },
-          ...prev.slice(0, 4),
-        ]);
+        setSelfie(null);
+        setMostrarCamara(false);
+        await actualizarHistorial();
       } else {
         setMensaje(`⚠️ ${data.mensaje || "Error al registrar fichaje"}`);
       }
@@ -138,37 +154,19 @@ const Fichaje = () => {
       <p className="mb-4 text-sm sm:text-lg text-center flex items-center gap-2">
         Ubicación: {direccion.includes("❌") ? "❌" : "📍"} {direccion}
       </p>
-
-      {mostrarCamara ? (
+      {selfie ? (
         <div>
-          <video ref={videoRef} autoPlay className="w-full h-auto" />
-          <canvas ref={canvasRef} className="hidden" width={240} height={180} />
-          <button onClick={capturarSelfie} className="mt-4 bg-green-600 px-4 py-2 rounded-md">Capturar Selfie</button>
+          <img src={selfie} alt="Selfie" className="w-32 h-32 rounded-full" />
+          <button onClick={fichar} disabled={!selfie || cargandoFichaje} className="mt-4 px-4 py-2 rounded-md bg-purple-600 hover:bg-purple-700">
+            {cargandoFichaje ? "⏳ Fichando..." : "Confirmar Fichaje"}
+          </button>
+          <button onClick={() => { setSelfie(null); setMostrarCamara(true); }} className="mt-2 bg-red-500 px-4 py-2 rounded-md text-white">
+            Tomar otra selfie
+          </button>
         </div>
       ) : (
-        selfie ? (
-          <div>
-            <img src={selfie} alt="Selfie" className="w-32 h-32 rounded-full" />
-            <button onClick={fichar} disabled={cargandoFichaje} className={`mt-4 px-4 py-2 rounded-md ${cargandoFichaje ? "bg-gray-500" : "bg-purple-600 hover:bg-purple-700"}`}>
-              {cargandoFichaje ? "⏳ Fichando..." : "Confirmar Fichaje"}
-            </button>
-          </div>
-        ) : (
-          <button onClick={iniciarCamara} className="bg-blue-500 px-4 py-2 rounded-md">Abrir Cámara</button>
-        )
+        <button onClick={() => setMostrarCamara(true)} className="bg-blue-500 px-4 py-2 rounded-md">Abrir Cámara</button>
       )}
-
-      {mensaje && <p className="mt-4 text-yellow-400 text-center font-semibold text-sm sm:text-base">{mensaje}</p>}
-
-      <h2 className="text-lg sm:text-xl mt-6 text-purple-300 font-bold text-center">Historial Reciente</h2>
-      <ul className="mt-4 w-full space-y-2 sm:space-y-3">
-        {historial.map((f, index) => (
-          <li key={index} className="bg-gray-800 p-3 sm:p-4 rounded-lg shadow-md flex justify-between items-center border border-gray-700 text-xs sm:text-sm">
-            <span className="font-bold text-purple-200">{f.fechaHora}</span>
-            <span className={`px-2 sm:px-3 py-1 rounded text-white font-semibold ${f.tipo === "entrada" ? "bg-green-500" : "bg-red-500"}`}>{f.tipo.toUpperCase()}</span>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };

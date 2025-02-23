@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
+import Logo from "./Logo";
+
 
 const Login = () => {
   const [dni, setDni] = useState("");
@@ -49,10 +51,18 @@ const Login = () => {
 
   return (
     <div className="w-full h-screen flex items-center justify-center bg-gray-900">
-      <div className="w-full max-w-sm bg-gray-800 shadow-lg rounded-lg py-10 px-6 sm:px-8 text-white">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-center mb-6 text-purple-400">
-          Bienvenido a Fingertech
+      <div className="w-full max-w-sm bg-gray-800 shadow-lg rounded-lg py-12 px-6 sm:px-8 text-white">
+      <div className="flex flex-col items-center gap-3">
+          {/* Logo */}
+      <Logo size="200px" />
+      <h1 className="text-xl sm:text-2xl font-bold text-center text-purple-400">
+          Bienvenido a FingerCloud
         </h1>
+        </div>
+        <p className="text-sm text-gray-300 text-center mt-2">
+
+          Ingrese sus datos para continuar
+        </p>
 
         {/* Input DNI */}
         <div className="mb-4">
@@ -90,22 +100,24 @@ const Login = () => {
             </button>
           </div>
         </div>
-
-        {/* Botón Ingresar con spinner de carga */}
+{/* Botón de Iniciar Sesión */}
         <button
-          onClick={handleLogin}
-          disabled={cargando}
-          className={`w-full px-6 py-3 mt-6 ${
-            cargando ? "bg-gray-500" : "bg-purple-600 hover:bg-purple-700"
-          } transition-all rounded-lg text-white font-bold shadow-lg flex items-center justify-center gap-2`}
-        >
-          {cargando ? (
-            <>
-              <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-purple-500 mr-2"></div>
-              Iniciando sesión...
-            </>
-          ) : "Ingresar"}
-        </button>
+  onClick={handleLogin}
+  disabled={cargando}
+  className={`w-full px-6 py-3 mt-6 ${
+    cargando ? "bg-gray-500" : "bg-purple-600 hover:bg-purple-700"
+  } transition-all duration-200 transform hover:scale-105 active:scale-95 
+  shadow-lg hover:shadow-purple-500/50 rounded-lg text-white font-bold 
+  flex items-center justify-center gap-2`}
+>
+  {cargando ? (
+    <>
+      <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-purple-500 mr-2"></div>
+      Iniciando sesión...
+    </>
+  ) : "Ingresar"}
+</button>
+
 
         {/* Mensajes de validación */}
         {mensaje && (

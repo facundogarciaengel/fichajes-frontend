@@ -85,17 +85,19 @@ const Login = () => {
     DNI
   </label>
   <input
-    type="text"
-    id="dni"
-    placeholder="Ingrese su DNI"
-    value={dni}
-    onChange={(e) => {
-      if (/^\d*$/.test(e.target.value)) setDni(e.target.value);
-    }}
-    className="w-full px-4 py-3 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none 
-      focus:ring-2 focus:ring-purple-500 focus:border-purple-400 transition-all duration-300 shadow-sm 
-      focus:shadow-purple-600/50"
-  />
+  type="text"
+  id="dni"
+  placeholder="Ingrese su DNI"
+  value={dni}
+  onChange={(e) => {
+    if (/^\d*$/.test(e.target.value)) setDni(e.target.value);
+  }}
+  className="w-full px-4 py-3 bg-gray-700 text-white rounded-md border border-gray-600 
+    focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-400 
+    transition-all duration-300 shadow-sm focus:shadow-purple-600/50 
+    autofill:bg-gray-700 autofill:text-white autofill:border-purple-500"
+/>
+
 </motion.div>
 
 {/* Input Contraseña con botón de mostrar/ocultar */}
@@ -109,24 +111,27 @@ const Login = () => {
     Contraseña
   </label>
   <div className="relative w-full">
-    <input
-      type={mostrarPassword ? "text" : "password"}
-      id="password"
-      placeholder="Ingrese su contraseña"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-      className="w-full px-4 py-3 pr-12 bg-gray-700 text-white rounded-md border border-gray-600 
-        focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-400 transition-all 
-        duration-300 shadow-sm focus:shadow-purple-600/50"
-    />
-    <button
-      type="button"
-      onClick={() => setMostrarPassword(!mostrarPassword)}
-      className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-transparent p-1 
-        text-gray-400 hover:text-white transition"
-    >
-      {mostrarPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-    </button>
+  <input
+  type={mostrarPassword ? "text" : "password"}
+  id="password"
+  placeholder="Ingrese su contraseña"
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+  className="w-full px-4 py-3 pr-12 bg-gray-700 text-white rounded-md border border-gray-600 
+    focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-400 
+    transition-all duration-300 shadow-sm focus:shadow-purple-600/50 
+    autofill:bg-gray-700 autofill:text-white autofill:border-purple-500"
+/>
+<button
+  type="button"
+  onClick={() => setMostrarPassword(!mostrarPassword)}
+  className={`absolute right-4 top-1/2 transform -translate-y-1/2 bg-transparent p-1 
+    transition text-gray-400 hover:text-white focus:text-white
+    ${mostrarPassword ? "text-purple-400" : ""}`}
+>
+  {mostrarPassword ? <EyeOff className="h-6 w-6" /> : <Eye className="h-6 w-6" />}
+</button>
+
   </div>
 </motion.div>
 

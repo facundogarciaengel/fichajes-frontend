@@ -84,3 +84,11 @@ html, body, #root {
   justify-content: center;
   align-items: center;
 }
+
+/* Da un efecto de "fade-in" al autofill en lugar del amarillo feo */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #4b5563 inset !important; /* Un gris oscuro */
+  box-shadow: 0 0 0px 1000px #4b5563 inset !important;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 1s ease-in-out;
+}

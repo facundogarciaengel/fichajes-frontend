@@ -65,10 +65,14 @@ const Login = () => {
   Bienvenido a FingerCloud
 </motion.h1>
         </div>
-        <p className="text-sm text-gray-300 text-center mt-2 font-poppins">
-
-          Ingrese sus datos para continuar
-        </p>
+        <motion.p
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 1.2, ease: "easeOut" }}
+  className="text-sm text-gray-300 text-center mt-2 font-poppins"
+>
+  Ingrese sus datos para continuar
+</motion.p>
 
       {/* Input DNI */}
 <motion.div

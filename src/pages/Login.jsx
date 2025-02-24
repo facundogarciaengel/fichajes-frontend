@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import Logo from "./Logo";
+import { motion } from "framer-motion";
 
 
 const Login = () => {
@@ -55,51 +56,76 @@ const Login = () => {
       <div className="flex flex-col items-center gap-3">
           {/* Logo */}
       <Logo size="200px" />
-      <h1 className="text-xl sm:text-2xl font-bold text-center text-purple-400">
-          Bienvenido a FingerCloud
-        </h1>
+      <motion.h1
+  initial={{ opacity: 0, y: -10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, ease: "easeOut" }}
+  className="text-xl sm:text-2xl font-bold text-center text-purple-400 font-poppins"
+>
+  Bienvenido a FingerCloud
+</motion.h1>
         </div>
-        <p className="text-sm text-gray-300 text-center mt-2">
+        <p className="text-sm text-gray-300 text-center mt-2 font-poppins">
 
           Ingrese sus datos para continuar
         </p>
 
-        {/* Input DNI */}
-        <div className="mb-4">
-          <label htmlFor="dni" className="block text-sm font-medium text-gray-300">DNI</label>
-          <input
-            type="text"
-            id="dni"
-            placeholder="Ingrese su DNI"
-            value={dni}
-            onChange={(e) => {
-              if (/^\d*$/.test(e.target.value)) setDni(e.target.value);
-            }}
-            className="w-full px-4 py-3 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
-        </div>
+      {/* Input DNI */}
+<motion.div
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, ease: "easeOut" }}
+  className="mb-4"
+>
+  <label htmlFor="dni" className="block text-sm font-medium text-gray-300">
+    DNI
+  </label>
+  <input
+    type="text"
+    id="dni"
+    placeholder="Ingrese su DNI"
+    value={dni}
+    onChange={(e) => {
+      if (/^\d*$/.test(e.target.value)) setDni(e.target.value);
+    }}
+    className="w-full px-4 py-3 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none 
+      focus:ring-2 focus:ring-purple-500 focus:border-purple-400 transition-all duration-300 shadow-sm 
+      focus:shadow-purple-600/50"
+  />
+</motion.div>
 
-        {/* Input Contraseña con botón de mostrar/ocultar */}
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-300">Contraseña</label>
-          <div className="relative w-full">
-            <input
-              type={mostrarPassword ? "text" : "password"}
-              id="password"
-              placeholder="Ingrese su contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 pr-12 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-            <button
-              type="button"
-              onClick={() => setMostrarPassword(!mostrarPassword)}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-transparent p-1 text-gray-400 hover:text-white transition"
-            >
-              {mostrarPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-            </button>
-          </div>
-        </div>
+{/* Input Contraseña con botón de mostrar/ocultar */}
+<motion.div
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, ease: "easeOut" }}
+  className="mb-4"
+>
+  <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+    Contraseña
+  </label>
+  <div className="relative w-full">
+    <input
+      type={mostrarPassword ? "text" : "password"}
+      id="password"
+      placeholder="Ingrese su contraseña"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      className="w-full px-4 py-3 pr-12 bg-gray-700 text-white rounded-md border border-gray-600 
+        focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-400 transition-all 
+        duration-300 shadow-sm focus:shadow-purple-600/50"
+    />
+    <button
+      type="button"
+      onClick={() => setMostrarPassword(!mostrarPassword)}
+      className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-transparent p-1 
+        text-gray-400 hover:text-white transition"
+    >
+      {mostrarPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+    </button>
+  </div>
+</motion.div>
+
 {/* Botón de Iniciar Sesión */}
         <button
   onClick={handleLogin}
